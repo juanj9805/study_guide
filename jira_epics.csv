@@ -1,0 +1,7 @@
+Issue Type,Summary,Description,Priority
+Epic,Infrastructure and Database,"Set up the data layer: Dinosaur entity, EF Core DbContext, database migrations, and uniqueness constraints.",High
+Epic,Insertion Module,"Register new dinosaurs in the system with required field validation and duplicate prevention.",High
+Epic,Query Module,"All LINQ-based queries: listings, filters, projections, groupings, and advanced filters.",High
+Epic,Update Module,"Modify existing dinosaur data, including security code update with confirmation.",Medium
+Epic,Deletion Module,"Remove dinosaurs from the system by ID or email, with confirmation dialog.",Medium
+Epic,Documentation and Deliverables,"System diagrams, GitHub repository setup, Docusaurus documentation, and Jira activity evidence.",Low

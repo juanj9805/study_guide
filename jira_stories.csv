@@ -1,0 +1,160 @@
+Issue Type,Summary,Description,Parent,Story Points,Priority
+Story,Configure Dinosaur entity with required fields,"As an investigator, I want the system to store the basic identification data of each dinosaur, so that no specimen information is lost between system sessions.
+
+Acceptance Criteria:
+- AC1: The Dinosaur entity includes the following required fields: FirstName, LastName, Username, Email.
+- AC2: The entity also supports optional fields: Age, Zone, Sector, Address, Phone, DietType, CreatedAt.
+- AC3: The entity is mapped to a database table via EF Core.
+- AC4: CreatedAt is automatically set on record creation.",SCRUM-4,3,High
+Story,Set up EF Core DbContext,"As an investigator, I want the system to persist dinosaur data to a database, so that records are available across multiple sessions without data loss.
+
+Acceptance Criteria:
+- AC1: A DbContext class is created and includes a DbSet<Dinosaur> property.
+- AC2: The DbContext is configured to connect to a SQL Server database via connection string.
+- AC3: The application registers the DbContext through dependency injection or direct instantiation.",SCRUM-4,2,High
+Story,Create and run initial database migration,"As an investigator, I want the database schema to be created automatically from the entity model, so that the system is ready to store data without manual SQL scripts.
+
+Acceptance Criteria:
+- AC1: Running Add-Migration InitialCreate generates a valid migration file.
+- AC2: Running Update-Database applies the migration and creates the Dinosaurs table.
+- AC3: The table structure matches the Dinosaur entity definition.",SCRUM-4,1,High
+Story,Enforce uniqueness on Username and Email,"As an investigator, I want the system to prevent two dinosaurs from sharing the same username or registration code, so that each specimen can be uniquely identified and tracked.
+
+Acceptance Criteria:
+- AC1: The database enforces a unique constraint on the Username column.
+- AC2: The database enforces a unique constraint on the Email column.
+- AC3: Attempting to insert a duplicate username or email raises a detectable error.",SCRUM-4,2,High
+Story,Register a new dinosaur with required fields,"As an investigator, I want to register a new dinosaur by providing its name, species, username, and registration code, so that the specimen becomes part of the official park record.
+
+Acceptance Criteria:
+- AC1: The system prompts for FirstName, LastName, Username, and Email.
+- AC2: All four required fields must be non-empty; the system rejects the registration otherwise.
+- AC3: The Email field must follow a valid email format (contains @ and domain).
+- AC4: On success, the system displays a confirmation message that the dinosaur was registered correctly.",SCRUM-5,3,High
+Story,Reject registration if username already exists,"As an investigator, I want the system to prevent registering a dinosaur with a username that is already in use, so that each specimen has a unique identifier in the park.
+
+Acceptance Criteria:
+- AC1: Before saving, the system checks whether the username already exists in the database.
+- AC2: If the username exists, registration is rejected and an error message is displayed.
+- AC3: No record is created in the database when the username is duplicate.",SCRUM-5,2,High
+Story,Reject registration if email already exists,"As an investigator, I want the system to prevent registering a dinosaur with a registration code already assigned to another specimen, so that each lab code maps to exactly one dinosaur.
+
+Acceptance Criteria:
+- AC1: Before saving, the system checks whether the email already exists in the database.
+- AC2: If the email exists, registration is rejected and an error message is displayed.
+- AC3: No record is created in the database when the email is duplicate.",SCRUM-5,2,High
+Story,List all registered dinosaurs,"As an investigator, I want to see a full list of all dinosaurs registered in the system, so that I can get a general overview of all specimens in the park.
+
+Acceptance Criteria:
+- AC1: The query uses LINQ to retrieve all records from the Dinosaurs table.
+- AC2: The list displays at minimum: ID, FirstName, LastName, Username, and Email for each dinosaur.
+- AC3: If no dinosaurs are registered, the system displays an appropriate message.",SCRUM-6,2,Medium
+Story,View dinosaur detail by ID,"As an investigator, I want to look up a dinosaur by its system ID, so that I can quickly access the full profile of a specific specimen.
+
+Acceptance Criteria:
+- AC1: The system prompts the investigator to enter a dinosaur ID.
+- AC2: The system uses LINQ to find the matching record.
+- AC3: All available fields for that dinosaur are displayed.
+- AC4: If no dinosaur with that ID exists, the system displays a not-found message.",SCRUM-6,1,Medium
+Story,View dinosaur detail by registration code,"As an investigator, I want to look up a dinosaur by its lab registration code (email), so that I can retrieve specimen data using the code assigned by the laboratory.
+
+Acceptance Criteria:
+- AC1: The system prompts the investigator to enter a registration code (email).
+- AC2: The system uses LINQ to find the matching record.
+- AC3: All available fields for that dinosaur are displayed.
+- AC4: If no match is found, the system displays a not-found message.",SCRUM-6,1,Medium
+Story,Filter dinosaurs by zone and sector,"As an investigator, I want to filter dinosaurs by their assigned zone or sector, so that I can monitor which specimens are located in a specific area of the park.
+
+Acceptance Criteria:
+- AC1: The system allows filtering by Zone (equivalent to city).
+- AC2: The system allows filtering by Sector (equivalent to country).
+- AC3: Both filters use LINQ and return only matching records.
+- AC4: The system shows the count of results returned.
+- AC5: If no matches exist, an appropriate message is shown.",SCRUM-6,2,Medium
+Story,Filter dinosaurs by age and diet type,"As an investigator, I want to filter dinosaurs by minimum age or diet type (carnivore/herbivore), so that I can study specific groups of specimens based on biological criteria.
+
+Acceptance Criteria:
+- AC1: The system allows filtering dinosaurs older than a specified age using LINQ.
+- AC2: The system allows filtering by diet type (carnivore or herbivore) using LINQ.
+- AC3: Age input must be validated as a non-negative integer.
+- AC4: Results display the relevant fields for each matching dinosaur.",SCRUM-6,2,Medium
+Story,Display full names and registration codes report,"As an investigator, I want to generate a report showing the full name and registration code of every dinosaur, so that I can share a concise reference list with the scientific team.
+
+Acceptance Criteria:
+- AC1: The query uses a LINQ projection to return only FullName (FirstName + LastName) and Email.
+- AC2: The report is displayed in a readable format.
+- AC3: The report covers all registered dinosaurs.",SCRUM-6,2,Low
+Story,Count dinosaurs by zone and sector,"As an investigator, I want to see how many dinosaurs are assigned to each zone and each sector, so that I can assess population distribution across the park.
+
+Acceptance Criteria:
+- AC1: The system uses LINQ grouping to count dinosaurs per Zone.
+- AC2: The system uses LINQ grouping to count dinosaurs per Sector.
+- AC3: Results display the zone/sector name and the corresponding count.
+- AC4: Total count across all dinosaurs matches the general registry count.",SCRUM-6,3,Medium
+Story,List dinosaurs without tracking device or location,"As an investigator, I want to identify dinosaurs that have no tracking device assigned or no registered location, so that I can prioritize which specimens need immediate attention.
+
+Acceptance Criteria:
+- AC1: The system uses LINQ to filter dinosaurs where Phone is null or empty.
+- AC2: The system uses LINQ to filter dinosaurs where Address is null or empty.
+- AC3: Both lists are displayed separately with a clear label.
+- AC4: If all dinosaurs have the data, the system shows an appropriate message.",SCRUM-6,2,Medium
+Story,List dinosaurs sorted by date and alphabetically by species,"As an investigator, I want to view dinosaurs ordered by their registration date or alphabetically by species, so that I can easily navigate the registry in a structured way.
+
+Acceptance Criteria:
+- AC1: The system uses LINQ OrderBy to sort by CreatedAt descending (most recent first).
+- AC2: The system uses LINQ OrderBy to sort alphabetically by LastName (species).
+- AC3: Both orderings are available as separate options.",SCRUM-6,2,Low
+Story,Update dinosaur data fields,"As an investigator, I want to modify the stored information of a registered dinosaur, so that the system always reflects the most accurate and up-to-date data for each specimen.
+
+Acceptance Criteria:
+- AC1: The system allows updating any field of the Dinosaur entity (required and optional).
+- AC2: After updating, the system saves the changes to the database via EF Core.
+- AC3: The system displays a confirmation message once the update is successful.
+- AC4: Required fields (FirstName, LastName, Username, Email) cannot be set to empty.",SCRUM-7,3,Medium
+Story,Update dinosaur security code with confirmation,"As an investigator, I want to change the security code (password) of a dinosaur record with a confirmation step, so that accidental or unauthorized changes are prevented.
+
+Acceptance Criteria:
+- AC1: The system prompts for the new security code and asks for confirmation (enter it twice).
+- AC2: If both entries match, the security code is updated and a success message is shown.
+- AC3: If the entries do not match, the update is rejected and an error message is displayed.
+- AC4: The security code is not stored or displayed in plain text in the output.",SCRUM-7,2,Medium
+Story,Delete dinosaur by ID with confirmation,"As an investigator, I want to remove a dinosaur from the registry by its ID after confirming the action, so that accidental deletions do not result in permanent data loss without intent.
+
+Acceptance Criteria:
+- AC1: The system prompts the investigator to enter the dinosaur ID to delete.
+- AC2: Before deleting, the system displays the message: ""Are you sure you want to delete this dinosaur? (Y/N)"".
+- AC3: If confirmed (Y), the record is deleted and a success message is shown.
+- AC4: If rejected (N), no changes are made.
+- AC5: If the ID does not exist, an appropriate error message is displayed.",SCRUM-8,2,Medium
+Story,Delete dinosaur by registration code with confirmation,"As an investigator, I want to remove a dinosaur from the registry by its registration code (email) after confirming the action, so that lab records can be cleared using the code assigned at registration.
+
+Acceptance Criteria:
+- AC1: The system prompts the investigator to enter the registration code (email) to delete.
+- AC2: Before deleting, the system displays: ""Are you sure you want to delete this dinosaur? (Y/N)"".
+- AC3: If confirmed (Y), the record is deleted and a success message is shown.
+- AC4: If rejected (N), no changes are made.
+- AC5: If the email does not exist, an appropriate error message is displayed.",SCRUM-8,1,Medium
+Story,Create system diagrams,"As an investigator, I want the system to be accompanied by formal documentation diagrams, so that the design and behavior of the system can be understood and reviewed by the scientific and academic team.
+
+Acceptance Criteria:
+- AC1: A flowchart diagram covering the main system flows is created.
+- AC2: A use case diagram identifying the actor (Investigator) and all system use cases is created.
+- AC3: A class diagram showing the Dinosaur entity, DbContext, and their relationships is created.",SCRUM-9,3,Low
+Story,Set up GitHub repository with conventional commits,"As an investigator, I want the project source code hosted on GitHub with a consistent commit history, so that the development process is traceable and meets academic submission standards.
+
+Acceptance Criteria:
+- AC1: A public GitHub repository is created for the project.
+- AC2: All commits follow the conventional commits format (feat:, fix:, refactor:, docs:, chore:).
+- AC3: The repository contains the full project source code organized by module.",SCRUM-9,2,Low
+Story,Document system in Docusaurus,"As an investigator, I want the system functionality documented in Docusaurus, so that any team member can understand how to use and maintain the system.
+
+Acceptance Criteria:
+- AC1: A Docusaurus site is configured for the project.
+- AC2: Documentation covers all modules: Insertion, Queries, Update, and Deletion.
+- AC3: The site includes setup instructions (migrations, connection string, running the app).",SCRUM-9,3,Low
+Story,Register activity evidence in Jira,"As an investigator, I want all development activities tracked in Jira, so that the project progress is visible and auditable for academic review.
+
+Acceptance Criteria:
+- AC1: All Epics and User Stories are created in Jira before development starts.
+- AC2: Each story is moved through the appropriate status columns (To Do → In Progress → Done).
+- AC3: Screenshots or exports of the Jira board are included as evidence in the deliverable.",SCRUM-9,1,Low
